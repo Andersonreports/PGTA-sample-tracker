@@ -8,39 +8,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    /* ───────────────────── TOKENS ───────────────────── */
     :root{
       color-scheme: light only;
-      --bg:        #f4f6fb;
-      --panel:     #ffffff;
-      --text:      #1f2937;
-      --heading:   #111827;
-      --muted:     #6b7280;
-      --border:    #e5e7eb;
-      --border-2:  #eef1f6;
-      --thead:     #f8fafc;
-
-      --received:  #3b82f6;  --received-bg:#eff6ff;
-      --extract:   #d97706;  --extract-bg: #fff7ed;
-      --pending:   #6b7280;  --pending-bg: #f3f4f6;
-      --prep:      #db2777;  --prep-bg:    #fdf2f8;
-      --released:  #16a34a;  --released-bg:#f0fdf4;
-
-      --danger:    #dc2626;  --danger-bg:  #fef2f2;
-      --accent:    #2563eb;  --accent-h:   #1d4ed8;
-      --teal:      #0d9488;
-
-      --r:   12px;
-      --rs:  8px;
-      --sh:  0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
-      --tr:  all .18s cubic-bezier(.4,0,.2,1);
+      --bg:#f4f6fb; --panel:#fff; --text:#1f2937; --heading:#111827; --muted:#6b7280;
+      --border:#e5e7eb; --border-2:#eef1f6; --thead:#f8fafc;
+      --received:#3b82f6; --received-bg:#eff6ff;
+      --extract:#d97706;  --extract-bg:#fff7ed;
+      --pending:#6b7280;  --pending-bg:#f3f4f6;
+      --prep:#db2777;     --prep-bg:#fdf2f8;
+      --released:#16a34a; --released-bg:#f0fdf4;
+      --danger:#dc2626; --danger-bg:#fef2f2; --accent:#2563eb; --accent-h:#1d4ed8; --teal:#0d9488;
+      --r:12px; --rs:8px; --sh:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04); --tr:all .18s cubic-bezier(.4,0,.2,1);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{font-family:'Inter',system-ui,sans-serif;font-size:14px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
     .wrap{max-width:1500px;margin:0 auto;padding:26px 32px 48px}
 
-    /* ── TOP BAR ── */
     .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
     .title{font-size:26px;font-weight:800;color:var(--heading);letter-spacing:-.4px}
     .subtitle{display:flex;align-items:center;gap:8px;margin-top:4px;color:var(--muted);font-size:13px;font-weight:500}
@@ -49,30 +33,25 @@
     .pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:999px}
     .pill.live{color:var(--released);background:var(--released-bg)}
     .pill.demo{color:var(--extract);background:var(--extract-bg)}
-
     .btn{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:14px;font-weight:600;border:none;cursor:pointer;border-radius:var(--rs);padding:10px 20px;transition:var(--tr)}
     .btn-primary{background:var(--accent);color:#fff}
     .btn-primary:hover{background:var(--accent-h)}
-    .btn-primary:active{transform:translateY(1px)}
     .btn .spin{animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ── NAV BAR ── */
-    .nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px;padding:8px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
+    .nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px;padding:8px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
     .nav-btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:14px;font-weight:600;border:1px solid transparent;cursor:pointer;border-radius:var(--rs);padding:9px 16px;color:var(--muted);background:transparent;transition:var(--tr)}
     .nav-btn:hover{background:#f3f4f6;color:var(--text)}
     .nav-btn.active{background:var(--accent);color:#fff}
-    .nav-btn .tag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.25)}
-    .nav-btn:not(.active) .tag{background:#e5e7eb;color:var(--muted)}
-    .nav-sep{width:1px;align-self:stretch;background:var(--border);margin:2px 2px}
+    .nav-btn .tag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:#e5e7eb;color:var(--muted)}
+    .nav-btn.active .tag{background:rgba(255,255,255,.25);color:#fff}
+    .nav-sep{width:1px;align-self:stretch;background:var(--border);margin:2px}
     .month-picker{display:flex;align-items:center;gap:9px;margin-left:auto;padding-right:6px}
     .month-picker label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
-    select.month-select{font-family:inherit;font-size:14px;font-weight:600;color:var(--heading);background:#fff;border:1px solid var(--border);border-radius:var(--rs);padding:9px 34px 9px 14px;cursor:pointer;transition:var(--tr);appearance:none;
+    select.month-select{font-family:inherit;font-size:14px;font-weight:600;color:var(--heading);background:#fff;border:1px solid var(--border);border-radius:var(--rs);padding:9px 34px 9px 14px;cursor:pointer;appearance:none;
       background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
-    select.month-select:hover{border-color:#cbd5e1}
     select.month-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
 
-    /* ── STAT CARDS ── */
     .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
     .stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:20px 16px;text-align:center;box-shadow:var(--sh);transition:var(--tr);position:relative;overflow:hidden}
     .stat::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c,var(--border))}
@@ -80,69 +59,62 @@
     .stat .ic{font-size:24px;line-height:1;margin-bottom:8px}
     .stat .lbl{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
     .stat .num{font-size:28px;font-weight:800;color:var(--c,var(--heading));letter-spacing:-.5px}
-    .stat[data-s="received"]{--c:var(--received)}
-    .stat[data-s="extract"] {--c:var(--extract)}
-    .stat[data-s="pending"] {--c:var(--pending)}
-    .stat[data-s="prep"]    {--c:var(--prep)}
-    .stat[data-s="released"]{--c:var(--released)}
+    .stat[data-s="received"]{--c:var(--received)}.stat[data-s="extract"]{--c:var(--extract)}
+    .stat[data-s="pending"]{--c:var(--pending)}.stat[data-s="prep"]{--c:var(--prep)}.stat[data-s="released"]{--c:var(--released)}
 
-    /* ── BODY GRID ── */
     .body-grid{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
     .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
     .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;border-bottom:1px solid var(--border-2)}
     .panel-head h2{font-size:16px;font-weight:700;color:var(--heading);display:flex;align-items:center;gap:10px}
+    .panel-head .sub{font-size:12px;font-weight:500;color:var(--muted)}
     .count-chip{font-size:12px;font-weight:700;color:var(--muted);background:#f3f4f6;padding:2px 10px;border-radius:999px}
-
-    .search{display:flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:var(--rs);padding:7px 12px;background:#fff;min-width:210px;transition:var(--tr)}
+    .search{display:flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:var(--rs);padding:7px 12px;background:#fff;min-width:200px;transition:var(--tr)}
     .search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
     .search svg{width:15px;height:15px;color:var(--muted);flex:none}
     .search input{border:none;outline:none;font-family:inherit;font-size:13px;width:100%;background:transparent;color:var(--text)}
 
-    /* ── TABLE ── */
     table{width:100%;border-collapse:collapse}
     thead th{text-align:left;font-size:12px;font-weight:600;color:var(--muted);padding:12px 22px;background:var(--thead);border-bottom:1px solid var(--border-2);white-space:nowrap}
-    tbody td{padding:14px 22px;border-bottom:1px solid var(--border-2);font-size:14px}
+    tbody td{padding:13px 22px;border-bottom:1px solid var(--border-2);font-size:14px}
     tbody tr:last-child td{border-bottom:none}
-    tbody tr{transition:background .12s}
     tbody tr:hover{background:#fafbfd}
-    .sid{font-weight:600;color:var(--heading)}
-    .due{font-variant-numeric:tabular-nums;color:var(--text)}
-    .due.over{color:var(--danger);font-weight:700}
-
+    .sid{font-weight:600;color:var(--heading);white-space:nowrap}
+    .num-c{font-variant-numeric:tabular-nums;white-space:nowrap}
+    .num-c.over{color:var(--danger);font-weight:700}
     .badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;white-space:nowrap}
     .badge.received{color:var(--received);background:var(--received-bg)}
-    .badge.extract {color:var(--extract); background:var(--extract-bg)}
-    .badge.pending {color:var(--pending); background:var(--pending-bg)}
-    .badge.prep    {color:var(--prep);    background:var(--prep-bg)}
+    .badge.extract{color:var(--extract);background:var(--extract-bg)}
+    .badge.pending{color:var(--pending);background:var(--pending-bg)}
+    .badge.prep{color:var(--prep);background:var(--prep-bg)}
     .badge.released{color:var(--released);background:var(--released-bg)}
-
     .viewall{text-align:center;padding:16px}
     .viewall a{color:var(--accent);font-weight:600;font-size:14px;text-decoration:none;cursor:pointer}
     .viewall a:hover{text-decoration:underline}
     .empty{padding:40px 22px;text-align:center;color:var(--muted)}
 
-    /* ── SIDEBAR ── */
+    /* generic all-columns table */
+    .table-scroll{overflow-x:auto}
+    #gen-table thead th{position:sticky;top:0}
+    #gen-table td{white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+    #gen-table td:first-child,#gen-table th:first-child{position:sticky;left:0;background:var(--panel)}
+    #gen-table thead th:first-child{background:var(--thead)}
+
     .side{display:flex;flex-direction:column;gap:22px}
     .alert-panel{background:var(--danger-bg);border:1px solid #fecaca;border-radius:var(--r)}
     .alert-panel .panel-head{border-bottom:1px solid #fecaca}
-    .alert-panel h2{color:var(--danger)}
-    .alert-panel h2 svg{width:17px;height:17px}
+    .alert-panel h2{color:var(--danger)}.alert-panel h2 svg{width:17px;height:17px}
     .alert-list{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
     .alert-card{background:#fff;border:1px solid #fee2e2;border-left:3px solid var(--danger);border-radius:var(--rs);padding:11px 14px}
     .alert-card .aid{font-weight:700;color:var(--danger);font-size:14px}
     .alert-card .areason{color:var(--muted);font-size:12.5px;margin-top:2px}
     .alert-empty{padding:22px 16px;text-align:center;color:var(--muted);font-size:13px}
-
     .sum-list{padding:8px 22px 18px}
     .sum-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border-2)}
     .sum-row:last-child{border-bottom:none}
     .sum-row .k{color:var(--muted);font-size:14px}
     .sum-row .v{font-weight:700;font-size:18px;color:var(--heading)}
-    .v.inprog{color:var(--extract)}
-    .v.rate{color:var(--released)}
-    .v.avg{color:var(--teal)}
+    .v.inprog{color:var(--extract)}.v.rate{color:var(--released)}.v.avg{color:var(--teal)}
 
-    /* ── RESPONSIVE ── */
     @media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.body-grid{grid-template-columns:1fr}}
     @media(max-width:640px){.wrap{padding:18px 16px 40px}.stats{grid-template-columns:repeat(2,1fr)}.topbar{flex-direction:column}.month-picker{margin-left:0}}
   </style>
@@ -150,15 +122,10 @@
 <body>
   <div class="wrap">
 
-    <!-- TOP BAR -->
     <div class="topbar">
       <div>
         <div class="title">PGTA Sample Tracker</div>
-        <div class="subtitle">
-          <span class="dot" id="conn-dot"></span>
-          Live tracking • 30s sync
-          <span class="pill live" id="conn-pill">Live</span>
-        </div>
+        <div class="subtitle"><span class="dot" id="conn-dot"></span> Live tracking • 30s sync <span class="pill live" id="conn-pill">Live</span></div>
       </div>
       <button class="btn btn-primary" id="refresh-btn" onclick="refresh()">
         <svg id="refresh-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
@@ -166,26 +133,22 @@
       </button>
     </div>
 
-    <!-- NAV BAR -->
     <div class="nav">
-      <button class="nav-btn active" id="nav-current" onclick="showCurrent()">
-        📋 Current <span class="tag" id="nav-current-count">0</span>
-      </button>
+      <button class="nav-btn active" id="nav-current" onclick="showCurrent()">📊 Current <span class="tag" id="nav-current-sub">—</span></button>
+      <button class="nav-btn" id="nav-pending" onclick="showTable('Pending')">⏸️ Pending <span class="tag" id="nav-pending-count">0</span></button>
       <div class="nav-sep"></div>
       <div class="month-picker">
         <label for="month-select">Month</label>
-        <select class="month-select" id="month-select" onchange="onMonthChange()">
-          <option value="">Browse months…</option>
-        </select>
+        <select class="month-select" id="month-select" onchange="onMonthChange()"><option value="">Browse months…</option></select>
       </div>
     </div>
 
-    <!-- ══════════ CURRENT (PENDING) VIEW ══════════ -->
+    <!-- ═══════ CURRENT MONTH DASHBOARD ═══════ -->
     <div id="view-current">
-      <div class="stats" id="stats">
+      <div class="stats">
         <div class="stat" data-s="received"><div class="ic">📬</div><div class="lbl">Received</div><div class="num" id="c-received">0</div></div>
-        <div class="stat" data-s="extract"><div class="ic">🔬</div><div class="lbl">Extraction</div><div class="num" id="c-extract">0</div></div>
-        <div class="stat" data-s="pending"><div class="ic">⏳</div><div class="lbl">Pending</div><div class="num" id="c-pending">0</div></div>
+        <div class="stat" data-s="extract"><div class="ic">🔬</div><div class="lbl">Extraction (WGA)</div><div class="num" id="c-extract">0</div></div>
+        <div class="stat" data-s="pending"><div class="ic">🧬</div><div class="lbl">Sequenced</div><div class="num" id="c-pending">0</div></div>
         <div class="stat" data-s="prep"><div class="ic">📋</div><div class="lbl">Report Prep</div><div class="num" id="c-prep">0</div></div>
         <div class="stat" data-s="released"><div class="ic">✅</div><div class="lbl">Released</div><div class="num" id="c-released">0</div></div>
       </div>
@@ -193,15 +156,12 @@
       <div class="body-grid">
         <section class="panel">
           <div class="panel-head">
-            <h2>Current samples</h2>
-            <label class="search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="search" type="text" placeholder="Search..." oninput="renderCurrentTable()" autocomplete="off" />
-            </label>
+            <h2>In-progress samples <span class="sub" id="cur-month-label"></span></h2>
+            <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="search" type="text" placeholder="Search..." oninput="renderCurrentTable()" autocomplete="off"/></label>
           </div>
-          <div style="overflow-x:auto">
+          <div class="table-scroll">
             <table>
-              <thead><tr><th>Sample ID</th><th>Status</th><th>Due</th><th>Assigned</th></tr></thead>
+              <thead><tr><th>Sample ID</th><th>Stage</th><th>Test</th><th>Center</th><th>Received</th><th>Age</th></tr></thead>
               <tbody id="tbody"></tbody>
             </table>
           </div>
@@ -214,36 +174,30 @@
             <div class="alert-list" id="alert-list"></div>
           </div>
           <div class="panel">
-            <div class="panel-head"><h2>Summary</h2></div>
+            <div class="panel-head"><h2>Summary <span class="sub" id="sum-month-label"></span></h2></div>
             <div class="sum-list">
-              <div class="sum-row"><span class="k">Total samples</span><span class="v" id="s-total">0</span></div>
+              <div class="sum-row"><span class="k">Total this month</span><span class="v" id="s-total">0</span></div>
               <div class="sum-row"><span class="k">In progress</span><span class="v inprog" id="s-inprog">0</span></div>
               <div class="sum-row"><span class="k">Completion rate</span><span class="v rate" id="s-rate">0%</span></div>
-              <div class="sum-row"><span class="k">Avg time</span><span class="v avg" id="s-avg">0d</span></div>
+              <div class="sum-row"><span class="k">Avg turnaround</span><span class="v avg" id="s-avg">—</span></div>
             </div>
           </div>
         </aside>
       </div>
     </div>
 
-    <!-- ══════════ MONTH VIEW ══════════ -->
-    <div id="view-month" style="display:none">
+    <!-- ═══════ GENERIC ALL-COLUMNS TABLE (month / pending) ═══════ -->
+    <div id="view-table" style="display:none">
       <section class="panel">
         <div class="panel-head">
-          <h2 id="month-title">Month</h2>
+          <h2 id="tbl-title">Tab</h2>
           <div style="display:flex;align-items:center;gap:12px">
-            <span class="count-chip" id="month-count">0 samples</span>
-            <label class="search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="month-search" type="text" placeholder="Search..." oninput="renderMonthTable()" autocomplete="off" />
-            </label>
+            <span class="count-chip" id="tbl-count">0</span>
+            <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="tbl-search" type="text" placeholder="Search..." oninput="renderGenericTable()" autocomplete="off"/></label>
           </div>
         </div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead><tr><th>Sample ID</th><th>Status</th><th>Assigned</th><th>Received</th><th>Due</th><th>Released</th></tr></thead>
-            <tbody id="month-tbody"></tbody>
-          </table>
+        <div class="table-scroll">
+          <table id="gen-table"><thead id="gen-thead"></thead><tbody id="gen-tbody"></tbody></table>
         </div>
       </section>
     </div>
@@ -255,283 +209,277 @@
      CONFIG
   ===================================================================== */
   // PLACEHOLDER — replace with the deployed PGT-A Google Apps Script /exec URL.
-  // While it is the placeholder value the page uses bundled demo data.
+  // While it is the placeholder value the page uses synthetic demo data.
   const APPS_SCRIPT_URL = 'REPLACE_WITH_PGTA_APPS_SCRIPT_EXEC_URL';
-  const SYNC_INTERVAL   = 30000;   // 30s live sync
-  const TABLE_LIMIT     = 8;       // rows shown before "View all" on Current
-  const TODAY           = new Date();
+  const SYNC_INTERVAL = 30000;
+  const TABLE_LIMIT   = 8;
+  const TAT_DAYS      = 30;   // assumed turnaround target (no due date in the sheet)
+  const TODAY         = new Date();
 
-  // Tab whose name matches this is treated as the live "current samples" tab.
-  const PENDING_MATCH = /pending|current/i;
+  const PENDING_NAME  = 'Pending';
+  const EXCLUDE_TABS  = /marecs|not\s*reporting/i;   // hidden per current spec
 
-  const STATUSES = [
-    { key:'received', label:'Received',    match:['received','sample received','logged in'] },
-    { key:'extract',  label:'Extraction', match:['extraction','extract','dna extraction'] },
-    { key:'pending',  label:'Pending',    match:['pending','analysis','in analysis','wgs','sequencing'] },
-    { key:'prep',     label:'Report Prep',match:['report prep','report preparation','reporting','report'] },
-    { key:'released', label:'Released',   match:['released','completed','done','report released'] },
+  // Workflow stages, derived from which date columns are filled (most-advanced wins).
+  const STAGES = [
+    { key:'received', label:'Received' },
+    { key:'extract',  label:'Extraction' },
+    { key:'pending',  label:'Sequenced' },
+    { key:'prep',     label:'Report Prep' },
+    { key:'released', label:'Released' },
   ];
-  const ACTIVE_KEYS = ['extract','pending','prep'];
+  function stageLabel(k){ return (STAGES.find(s=>s.key===k)||STAGES[0]).label; }
 
-  // Shared column schema across every tab (Pending + all months).
+  // Logical field → possible header names (lowercased, matched loosely).
   const COL_MAP = {
-    sample_id: ['sample id','sample_id','sampleid','pgta id','pgt-a id','id'],
-    status:    ['status','stage','current status'],
-    assigned:  ['assigned','assigned to','assigned_to','analyst','embryologist','technician'],
-    received:  ['received','received date','received_date','date received','sample received'],
-    due:       ['due','due date','due_date','tat','deadline','target date'],
-    released:  ['released','release date','released_date','report release date'],
+    sample_id:    ['sample id'],
+    received:     ['date sample received'],
+    wga:          ['wga done on'],
+    seq:          ['seq date'],
+    attune:       ['attune upload'],
+    ngs:          ['ngs report'],
+    test:         ['test name'],
+    patient:      ['patient name'],
+    center:       ['center name','centre name'],
+    embryologist: ['embryologist name'],
   };
 
   /* =====================================================================
      STATE
   ===================================================================== */
-  let workbook   = {};    // { tabName: grid }
-  let pendingTab = null;  // name of the Pending tab
-  let monthTabs  = [];    // month tab names, newest first
-  let pendingRows = [];   // parsed rows from the Pending tab
-  let allRows     = [];   // parsed rows across every tab (for aggregate stats)
-  let currentMonth = null;
-  let showAll = false;
-  let isDemo  = false;
-  let syncTimer = null;
+  let workbook = {};       // { tabName: grid[][] }
+  let monthTabs = [];      // month tab names, newest first
+  let curMonthName = null; // current-month tab (or latest)
+  let curRows = [];        // parsed rows of current month
+  let activeTab = null;    // tab shown in the generic table
+  let showAll = false, isDemo = false, syncTimer = null;
 
   /* =====================================================================
-     FETCH  (live → demo fallback)
+     FETCH
   ===================================================================== */
-  async function fetchData(silent){
+  async function fetchData(){
     if (APPS_SCRIPT_URL.startsWith('REPLACE_WITH')){ loadWorkbook(buildDemoWorkbook(), false); return; }
     const controller = new AbortController();
-    const timer = setTimeout(()=>controller.abort(), 15000);
+    const timer = setTimeout(()=>controller.abort(), 20000);
     try{
       const resp = await fetch(APPS_SCRIPT_URL + '?all=1', { signal: controller.signal });
       clearTimeout(timer);
-      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
       let data = await resp.json();
-      // Accept {name:grid} (all tabs) or a bare grid (single tab) for safety.
       if(Array.isArray(data)) data = { 'Sheet1': data };
       loadWorkbook(data, true);
-    }catch(err){
-      clearTimeout(timer);
-      console.warn('Live fetch failed, using demo data:', err.message);
-      loadWorkbook(buildDemoWorkbook(), false);
-    }
+    }catch(err){ clearTimeout(timer); console.warn('Live fetch failed → demo:', err.message); loadWorkbook(buildDemoWorkbook(), false); }
   }
 
   function loadWorkbook(wb, live){
-    workbook = wb || {};
-    isDemo = !live;
-    setConn(live);
+    workbook = wb || {}; isDemo = !live; setConn(live);
+    const names = Object.keys(workbook).filter(n => !EXCLUDE_TABS.test(n));
+    monthTabs = names.filter(n => n.toLowerCase() !== PENDING_NAME.toLowerCase() && monthKey(n) > 0)
+                     .sort((a,b)=> monthKey(b) - monthKey(a));
 
-    const names = Object.keys(workbook);
-    pendingTab = names.find(n => PENDING_MATCH.test(n)) || null;
-    monthTabs  = names.filter(n => n !== pendingTab).sort((a,b)=> monthKey(b) - monthKey(a));
-
-    pendingRows = pendingTab ? parseGrid(workbook[pendingTab]) : [];
-    allRows = [];
-    names.forEach(n => { parseGrid(workbook[n]).forEach(r => { r._tab = n; allRows.push(r); }); });
+    // current month = tab matching today's month/year, else the newest month tab
+    const wantKey = TODAY.getFullYear()*100 + (TODAY.getMonth()+1);
+    curMonthName = monthTabs.find(n => monthKey(n) === wantKey) || monthTabs[0] || null;
+    curRows = curMonthName ? parseTab(workbook[curMonthName]).rows : [];
 
     buildMonthOptions();
+    document.getElementById('nav-pending-count').textContent = pendingCount();
     renderCurrentView();
-    if(currentMonth && workbook[currentMonth]) renderMonthTable();
-    else if(currentMonth){ currentMonth = null; showCurrent(); }
+    // keep whichever view is open in sync
+    if(activeTab && workbook[activeTab]) renderGenericTable();
+    else if(activeTab){ showCurrent(); }
   }
+  function pendingCount(){
+    const g = workbook[PENDING_NAME] || findTab(PENDING_NAME);
+    return g ? parseTab(g).rows.length : 0;
+  }
+  function findTab(name){ const k = Object.keys(workbook).find(n=>n.toLowerCase()===name.toLowerCase()); return k?workbook[k]:null; }
 
   function setConn(live){
-    document.getElementById('conn-dot').className = 'dot' + (live?'':' demo');
-    const pill = document.getElementById('conn-pill');
-    pill.className   = 'pill ' + (live?'live':'demo');
-    pill.textContent = live ? 'Live' : 'Demo data';
+    document.getElementById('conn-dot').className='dot'+(live?'':' demo');
+    const p=document.getElementById('conn-pill'); p.className='pill '+(live?'live':'demo'); p.textContent=live?'Live':'Demo data';
   }
 
   /* =====================================================================
-     PARSE
+     PARSE  — header row detected by presence of Sample ID + a data column
   ===================================================================== */
   function norm(v){ return String(v==null?'':v).trim(); }
-
-  function isHeaderRow(row){
-    const cells = row.map(c=>norm(c).toLowerCase());
-    return cells.some(c => COL_MAP.sample_id.includes(c)) && cells.some(c => COL_MAP.status.includes(c));
+  function headerIndex(grid){
+    for(let i=0;i<Math.min(grid.length,8);i++){
+      const c = grid[i].map(x=>norm(x).toLowerCase());
+      if(c.includes('sample id') && (c.includes('date sample received')||c.includes('test name')||c.includes('patient name'))) return i;
+    }
+    return 0;
   }
   function colIndexFor(headers, aliases){
-    const lower = headers.map(h=>norm(h).toLowerCase());
-    for(const a of aliases){ const i = lower.findIndex(h => h===a || h.includes(a)); if(i!==-1) return i; }
+    const low = headers.map(h=>norm(h).toLowerCase());
+    for(const a of aliases){ const i = low.findIndex(h=>h===a); if(i!==-1) return i; }
+    for(const a of aliases){ const i = low.findIndex(h=>h.includes(a)); if(i!==-1) return i; }
     return -1;
   }
-  function parseGrid(grid){
-    if(!Array.isArray(grid) || !grid.length) return [];
-    let headerIdx = grid.findIndex(isHeaderRow);
-    if(headerIdx===-1) headerIdx = 0;
-    const headers = grid[headerIdx];
-    const idx = {};
-    for(const k in COL_MAP) idx[k] = colIndexFor(headers, COL_MAP[k]);
-    const out = [];
-    for(let r=headerIdx+1; r<grid.length; r++){
+  function parseTab(grid){
+    if(!Array.isArray(grid)||!grid.length) return {headers:[],rows:[]};
+    const hi = headerIndex(grid); const headers = grid[hi];
+    const idx = {}; for(const k in COL_MAP) idx[k] = colIndexFor(headers, COL_MAP[k]);
+    const rows = [];
+    for(let r=hi+1;r<grid.length;r++){
       const row = grid[r];
       if(!row || !row.some(c=>norm(c)!=='')) continue;
-      const get = k => idx[k]!==-1 ? norm(row[idx[k]]) : '';
-      const sid = get('sample_id');
-      if(!sid) continue;
-      out.push({
-        sample_id: sid,
-        status:    resolveStatus(get('status')),
-        assigned:  get('assigned'),
-        received:  parseDate(get('received')),
-        due:       parseDate(get('due')),
-        released:  parseDate(get('released')),
-      });
+      const g = k => idx[k]!==-1 ? norm(row[idx[k]]) : '';
+      // require an identifiable sample (id or patient) to count as a data row
+      if(!g('sample_id') && !g('patient')) continue;
+      const rec={
+        sample_id:g('sample_id'), test:g('test'), patient:g('patient'), center:g('center'),
+        embryologist:g('embryologist'),
+        received:g('received'), wga:g('wga'), seq:g('seq'), attune:g('attune'), ngs:g('ngs'),
+        _raw: row
+      };
+      rec.stage = deriveStage(rec);
+      rows.push(rec);
     }
-    return out;
+    return {headers, rows};
   }
-  function resolveStatus(raw){
-    const v = norm(raw).toLowerCase();
-    for(const s of STATUSES){ if(s.match.some(m => v===m || v.includes(m))) return s.key; }
+  // most-advanced filled date column wins
+  function deriveStage(r){
+    if(norm(r.ngs))    return 'released';
+    if(norm(r.attune)) return 'prep';
+    if(norm(r.seq))    return 'pending';
+    if(norm(r.wga))    return 'extract';
     return 'received';
   }
-  function statusDef(key){ return STATUSES.find(s=>s.key===key) || STATUSES[0]; }
 
   /* =====================================================================
      DATES
   ===================================================================== */
   function parseDate(str){
     const s = norm(str); if(!s) return null; let m;
-    if((m = s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/))){ let[,d,mo,y]=m; y=y.length===2?'20'+y:y; const dt=new Date(+y,+mo-1,+d); return isNaN(dt)?null:dt; }
-    if((m = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/))){ const dt=new Date(+m[1],+m[2]-1,+m[3]); return isNaN(dt)?null:dt; }
-    const dt = new Date(s); return isNaN(dt)?null:dt;
+    if((m=s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})/))){ let[,d,mo,y]=m; y=y.length===2?'20'+y:y; const dt=new Date(+y,+mo-1,+d); return isNaN(dt)?null:dt; }
+    if((m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/))){ const dt=new Date(+m[1],+m[2]-1,+m[3]); return isNaN(dt)?null:dt; }
+    const dt=new Date(s); return isNaN(dt)?null:dt;
   }
-  function fmtShort(d){ return d ? String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0') : '—'; }
-  function fmtLong(d){ return d ? String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear() : '—'; }
   function daysBetween(a,b){ return Math.round((b-a)/86400000); }
-  function startOfDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function startOfDay(d){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+  function ageDays(r){ const d=parseDate(r.received); return d? daysBetween(startOfDay(d),startOfDay(TODAY)) : null; }
 
-  // Sort key for a month tab name like "July 2026", "Jul 2026", "2026-07", "07-2026".
-  const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  const MONTHS=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
   function monthKey(name){
-    const s = norm(name).toLowerCase(); let y=0, mo=0;
-    let m;
-    if((m = s.match(/([a-z]{3,})\s*[-/ ]?\s*(\d{4})/))){ mo = MONTHS.findIndex(x=>m[1].startsWith(x))+1; y=+m[2]; }
-    else if((m = s.match(/(\d{4})[-/](\d{1,2})/))){ y=+m[1]; mo=+m[2]; }
-    else if((m = s.match(/(\d{1,2})[-/](\d{4})/))){ mo=+m[1]; y=+m[2]; }
-    return y*100 + mo;
+    const s=norm(name).toLowerCase(); let y=0,mo=0,m;
+    if((m=s.match(/([a-z]{3,})\s*[-/ ]?\s*(\d{4})/))){ mo=MONTHS.findIndex(x=>m[1].startsWith(x))+1; y=+m[2]; }
+    else if((m=s.match(/(\d{4})[-/](\d{1,2})/))){ y=+m[1]; mo=+m[2]; }
+    else if((m=s.match(/(\d{1,2})[-/](\d{4})/))){ mo=+m[1]; y=+m[2]; }
+    return (mo>=1&&mo<=12)? y*100+mo : 0;
   }
 
   /* =====================================================================
      NAV
   ===================================================================== */
   function buildMonthOptions(){
-    const sel = document.getElementById('month-select');
-    const prev = sel.value;
-    sel.innerHTML = '<option value="">Browse months…</option>' +
-      monthTabs.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
-    if(prev && monthTabs.includes(prev)) sel.value = prev;
+    const sel=document.getElementById('month-select'); const prev=sel.value;
+    sel.innerHTML='<option value="">Browse months…</option>'+monthTabs.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
+    if(prev && monthTabs.includes(prev)) sel.value=prev;
   }
   function showCurrent(){
-    currentMonth = null;
-    document.getElementById('view-current').style.display = '';
-    document.getElementById('view-month').style.display = 'none';
+    activeTab=null;
+    document.getElementById('view-current').style.display='';
+    document.getElementById('view-table').style.display='none';
     document.getElementById('nav-current').classList.add('active');
-    document.getElementById('month-select').value = '';
+    document.getElementById('nav-pending').classList.remove('active');
+    document.getElementById('month-select').value='';
   }
-  function onMonthChange(){
-    const name = document.getElementById('month-select').value;
-    if(!name){ showCurrent(); return; }
-    currentMonth = name;
-    document.getElementById('view-current').style.display = 'none';
-    document.getElementById('view-month').style.display = '';
+  function showTable(tabName){
+    const g = workbook[tabName] || findTab(tabName);
+    if(!g){ return; }
+    activeTab = Object.keys(workbook).find(n=>n.toLowerCase()===tabName.toLowerCase()) || tabName;
+    document.getElementById('view-current').style.display='none';
+    document.getElementById('view-table').style.display='';
+    const isPending = tabName.toLowerCase()===PENDING_NAME.toLowerCase();
     document.getElementById('nav-current').classList.remove('active');
-    renderMonthTable();
+    document.getElementById('nav-pending').classList.toggle('active', isPending);
+    if(!isPending) document.getElementById('month-select').value = activeTab;
+    else document.getElementById('month-select').value='';
+    document.getElementById('tbl-search').value='';
+    renderGenericTable();
   }
+  function onMonthChange(){ const n=document.getElementById('month-select').value; if(!n){ showCurrent(); } else showTable(n); }
 
   /* =====================================================================
-     RENDER — CURRENT VIEW
+     RENDER — CURRENT MONTH DASHBOARD
   ===================================================================== */
   function renderCurrentView(){
-    renderStats();
-    renderCurrentTable();
-    renderAlerts();
-    renderSummary();
-    document.getElementById('nav-current-count').textContent = pendingRows.length;
+    const label = curMonthName ? '· '+curMonthName : '';
+    document.getElementById('cur-month-label').textContent = label;
+    document.getElementById('sum-month-label').textContent = label;
+    document.getElementById('nav-current-sub').textContent = curMonthName ? curMonthName.replace(/\s*\d{4}$/,'') : '—';
+    renderStats(); renderCurrentTable(); renderAlerts(); renderSummary();
   }
-
   function renderStats(){
-    const counts = {received:0,extract:0,pending:0,prep:0,released:0};
-    allRows.forEach(r => counts[r.status]!==undefined && counts[r.status]++);
-    document.getElementById('c-received').textContent = counts.received;
-    document.getElementById('c-extract').textContent  = counts.extract;
-    document.getElementById('c-pending').textContent  = counts.pending;
-    document.getElementById('c-prep').textContent     = counts.prep;
-    document.getElementById('c-released').textContent = counts.released;
+    const c={received:0,extract:0,pending:0,prep:0,released:0};
+    curRows.forEach(r=>c[r.stage]!==undefined&&c[r.stage]++);
+    document.getElementById('c-received').textContent=c.received;
+    document.getElementById('c-extract').textContent=c.extract;
+    document.getElementById('c-pending').textContent=c.pending;
+    document.getElementById('c-prep').textContent=c.prep;
+    document.getElementById('c-released').textContent=c.released;
   }
-
+  function inProgress(r){ return r.stage!=='released'; }
   function renderCurrentTable(){
-    const q = document.getElementById('search').value.trim().toLowerCase();
-    const today = startOfDay(TODAY);
-    let list = pendingRows.slice().sort((a,b)=> sortKey(b) - sortKey(a));
-    if(q) list = list.filter(r => r.sample_id.toLowerCase().includes(q) || statusDef(r.status).label.toLowerCase().includes(q) || (r.assigned||'').toLowerCase().includes(q));
-    const total = list.length;
-    if(!showAll && !q) list = list.slice(0, TABLE_LIMIT);
-
-    const tbody = document.getElementById('tbody');
-    tbody.innerHTML = !list.length
-      ? `<tr><td colspan="4" class="empty">No current samples found.</td></tr>`
-      : list.map(r=>{
-          const def = statusDef(r.status);
-          const over = r.due && r.status!=='released' && startOfDay(r.due) < today;
-          return `<tr><td class="sid">${esc(r.sample_id)}</td><td><span class="badge ${def.key}">${esc(def.label)}</span></td><td class="due ${over?'over':''}">${fmtShort(r.due)}</td><td>${esc(r.assigned)||'—'}</td></tr>`;
-        }).join('');
-
-    const va = document.getElementById('viewall-row'), link = document.getElementById('viewall');
-    if(q || total<=TABLE_LIMIT){ va.style.display='none'; }
-    else { va.style.display='block'; link.textContent = showAll ? 'Show less ↑' : `View all (${total}) →`; }
+    const q=document.getElementById('search').value.trim().toLowerCase();
+    let list=curRows.filter(inProgress).sort((a,b)=>(ageDays(b)||0)-(ageDays(a)||0)); // oldest/most-aged first
+    if(q) list=list.filter(r=>[r.sample_id,r.patient,r.test,r.center,stageLabel(r.stage)].some(v=>(v||'').toLowerCase().includes(q)));
+    const total=list.length;
+    if(!showAll && !q) list=list.slice(0,TABLE_LIMIT);
+    const tb=document.getElementById('tbody');
+    tb.innerHTML = !list.length ? `<tr><td colspan="6" class="empty">No in-progress samples.</td></tr>`
+      : list.map(r=>{ const age=ageDays(r); const over=age!=null&&age>TAT_DAYS;
+        return `<tr><td class="sid">${esc(r.sample_id)||'—'}</td><td><span class="badge ${r.stage}">${esc(stageLabel(r.stage))}</span></td><td>${esc(r.test)||'—'}</td><td>${esc(r.center)||'—'}</td><td class="num-c">${esc(r.received)||'—'}</td><td class="num-c ${over?'over':''}">${age!=null?age+'d':'—'}</td></tr>`;
+      }).join('');
+    const va=document.getElementById('viewall-row'), lk=document.getElementById('viewall');
+    if(q||total<=TABLE_LIMIT){ va.style.display='none'; } else { va.style.display='block'; lk.textContent=showAll?'Show less ↑':`View all (${total}) →`; }
   }
-  function sortKey(r){ const d=r.due||r.received||r.released; if(d) return d.getTime(); return parseInt((r.sample_id.match(/(\d+)/)||[])[1]||'0',10); }
-
   function renderAlerts(){
-    const today = startOfDay(TODAY); const alerts = [];
-    pendingRows.forEach(r=>{
-      if(r.status==='released') return;
-      if(r.due && startOfDay(r.due) < today){ alerts.push({id:r.sample_id, reason:`Overdue by ${daysBetween(startOfDay(r.due),today)} days`, sev:0}); return; }
-      if(r.due){ const dd = daysBetween(today, startOfDay(r.due)); if(dd>=0 && dd<=3){ alerts.push({id:r.sample_id, reason: dd===0?'Due today':`Due in ${dd} day${dd>1?'s':''}`, sev:1}); return; } }
-      if(r.received && ACTIVE_KEYS.includes(r.status)){ const age = daysBetween(startOfDay(r.received), today); if(age>=5){ alerts.push({id:r.sample_id, reason:`Stuck ${age} days`, sev:2}); } }
-    });
-    alerts.sort((a,b)=>a.sev-b.sev);
-    const el = document.getElementById('alert-list');
-    el.innerHTML = !alerts.length
-      ? `<div class="alert-empty">No fast-track alerts 🎉</div>`
-      : alerts.slice(0,5).map(a=>`<div class="alert-card"><div class="aid">${esc(a.id)}</div><div class="areason">${esc(a.reason)}</div></div>`).join('');
+    const list=curRows.filter(inProgress).map(r=>({r,age:ageDays(r)})).filter(x=>x.age!=null)
+      .sort((a,b)=>b.age-a.age)
+      .map(x=>{ const over=x.age-TAT_DAYS;
+        return { id:x.r.sample_id||x.r.patient||'—',
+                 reason: over>0?`Overdue by ${over} day${over>1?'s':''}`:(x.age>=TAT_DAYS*0.66?`Aging · ${x.age} days`:`In progress ${x.age} days`),
+                 sev: over>0?0:(x.age>=TAT_DAYS*0.66?1:2) };
+      }).filter(a=>a.sev<2).slice(0,5);
+    const el=document.getElementById('alert-list');
+    el.innerHTML = !list.length ? `<div class="alert-empty">No fast-track alerts 🎉</div>`
+      : list.map(a=>`<div class="alert-card"><div class="aid">${esc(a.id)}</div><div class="areason">${esc(a.reason)}</div></div>`).join('');
   }
-
   function renderSummary(){
-    const total = allRows.length;
-    const inprog = allRows.filter(r=>ACTIVE_KEYS.includes(r.status)).length;
-    const released = allRows.filter(r=>r.status==='released');
-    const rate = total ? (released.length/total*100) : 0;
-    const durations = released.filter(r=>r.received && r.released).map(r=>daysBetween(startOfDay(r.received), startOfDay(r.released))).filter(d=>d>=0);
-    const avg = durations.length ? durations.reduce((a,b)=>a+b,0)/durations.length : 0;
-    document.getElementById('s-total').textContent  = total;
-    document.getElementById('s-inprog').textContent = inprog;
-    document.getElementById('s-rate').textContent   = rate.toFixed(1)+'%';
-    document.getElementById('s-avg').textContent    = avg ? avg.toFixed(1)+'d' : '—';
+    const total=curRows.length;
+    const inprog=curRows.filter(inProgress).length;
+    const released=curRows.filter(r=>r.stage==='released');
+    const rate=total?(released.length/total*100):0;
+    const durs=released.map(r=>{ const a=parseDate(r.received), b=parseDate(r.ngs); return (a&&b)?daysBetween(startOfDay(a),startOfDay(b)):null; }).filter(d=>d!=null&&d>=0);
+    const avg=durs.length?durs.reduce((x,y)=>x+y,0)/durs.length:null;
+    document.getElementById('s-total').textContent=total;
+    document.getElementById('s-inprog').textContent=inprog;
+    document.getElementById('s-rate').textContent=rate.toFixed(1)+'%';
+    document.getElementById('s-avg').textContent=avg!=null?avg.toFixed(1)+'d':'—';
   }
-
-  function toggleViewAll(){ showAll = !showAll; renderCurrentTable(); }
+  function toggleViewAll(){ showAll=!showAll; renderCurrentTable(); }
 
   /* =====================================================================
-     RENDER — MONTH VIEW
+     RENDER — GENERIC ALL-COLUMNS TABLE
   ===================================================================== */
-  function renderMonthTable(){
-    if(!currentMonth) return;
-    document.getElementById('month-title').textContent = currentMonth;
-    const rows = parseGrid(workbook[currentMonth] || []);
-    const q = document.getElementById('month-search').value.trim().toLowerCase();
-    let list = rows.slice().sort((a,b)=> (b.released?b.released.getTime():0) - (a.released?a.released.getTime():0));
-    if(q) list = list.filter(r => r.sample_id.toLowerCase().includes(q) || statusDef(r.status).label.toLowerCase().includes(q) || (r.assigned||'').toLowerCase().includes(q));
+  function renderGenericTable(){
+    if(!activeTab) return;
+    const grid = workbook[activeTab] || [];
+    const hi = headerIndex(grid);
+    const headers = (grid[hi]||[]).map(h=>norm(h));
+    let rows = grid.slice(hi+1).filter(r=>r && r.some(c=>norm(c)!==''));
+    const q=document.getElementById('tbl-search').value.trim().toLowerCase();
+    if(q) rows=rows.filter(r=>r.some(c=>norm(c).toLowerCase().includes(q)));
 
-    document.getElementById('month-count').textContent = `${list.length} sample${list.length!==1?'s':''}`;
-    const tbody = document.getElementById('month-tbody');
-    tbody.innerHTML = !list.length
-      ? `<tr><td colspan="6" class="empty">No samples in ${esc(currentMonth)}.</td></tr>`
-      : list.map(r=>{ const def=statusDef(r.status); return `<tr><td class="sid">${esc(r.sample_id)}</td><td><span class="badge ${def.key}">${esc(def.label)}</span></td><td>${esc(r.assigned)||'—'}</td><td class="due">${fmtLong(r.received)}</td><td class="due">${fmtLong(r.due)}</td><td class="due">${fmtLong(r.released)}</td></tr>`; }).join('');
+    document.getElementById('tbl-title').textContent = activeTab;
+    document.getElementById('tbl-count').textContent = `${rows.length} row${rows.length!==1?'s':''}`;
+    document.getElementById('gen-thead').innerHTML = '<tr>'+headers.map(h=>`<th>${esc(h)||'&nbsp;'}</th>`).join('')+'</tr>';
+    const cols=headers.length;
+    document.getElementById('gen-tbody').innerHTML = !rows.length
+      ? `<tr><td colspan="${cols||1}" class="empty">No rows.</td></tr>`
+      : rows.map(r=>'<tr>'+headers.map((_,i)=>{ const v=norm(r[i]); return `<td title="${esc(v)}">${esc(v)}</td>`; }).join('')+'</tr>').join('');
   }
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -539,64 +487,67 @@
   /* =====================================================================
      REFRESH + SYNC
   ===================================================================== */
-  function refresh(){
-    const ic = document.getElementById('refresh-ic'); ic.classList.add('spin');
-    Promise.resolve(fetchData(false)).finally(()=> setTimeout(()=>ic.classList.remove('spin'), 400));
-  }
-  function startSync(){ if(syncTimer) clearInterval(syncTimer); syncTimer = setInterval(()=>fetchData(true), SYNC_INTERVAL); }
+  function refresh(){ const ic=document.getElementById('refresh-ic'); ic.classList.add('spin'); Promise.resolve(fetchData()).finally(()=>setTimeout(()=>ic.classList.remove('spin'),400)); }
+  function startSync(){ if(syncTimer) clearInterval(syncTimer); syncTimer=setInterval(fetchData, SYNC_INTERVAL); }
 
   /* =====================================================================
-     DEMO WORKBOOK  (Pending tab + month tabs) — mirrors the mockup
-       Pending: 157 Received · 89 Extraction · 34 Pending · 45 Report Prep = 325
-       Months (Jan–Jul 2026): 612 Released  →  total 937 · 65.3% · ~4.x d
+     DEMO WORKBOOK — SYNTHETIC data with the sheet's real column structure.
+     No real patient data is ever bundled here.
   ===================================================================== */
   function mulberry32(a){ return function(){ a|=0;a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
-  const DEMO_NAMES = ['Sharma','Patel','Kumar','Verma','Reddy','Singh','Nair','Iyer'];
-  const DAY = 86400000;
-  function dmy(d){ return [String(d.getDate()).padStart(2,'0'),String(d.getMonth()+1).padStart(2,'0'),d.getFullYear()].join('-'); }
-  const HEADERS = ['Sample ID','Status','Assigned','Received','Due','Released'];
+  const HEADERS=['S.No.','Date of Biopsy','Date Sample Received','Date TRF received','Received by','BOX Number','Sample ID','Remarks','Patient Name','NUMBER OF EMBRYOS','Embryo Name','Controls WGA & seq controls','Test Name','Center name','Location','EMBRYOLOGIST NAME','WGA DONE ON','KIT DETAIL','WGA Done by','WGA Storage Box','SEQ DATE','SEQ Platform','Attune upload','NGS Report'];
+  const D_TESTS=['PGT-A','NIPGT','PGT-SR','PGT-A+M','EMBRYOSURE','PGT-M'];
+  const D_CENTERS=['Sunrise Fertility','Hope IVF Centre','NovaLife Clinic','CarePoint IVF','Origin Fertility','BlueLotus IVF'];
+  const D_LOC=['Bangalore','Chennai','Mumbai','Pune','Hyderabad','Delhi'];
+  const D_STAFF=['ARUN','ADITHYA','MARIA','AKSHAYA','VIGNESH'];
+  const D_EMB=['A. Rao','S. Menon','K. Das','R. Nair','P. Shah','N. Iyer'];
+  const DAY=86400000;
+  function dmy(d){ return d?[String(d.getDate()).padStart(2,'0'),String(d.getMonth()+1).padStart(2,'0'),d.getFullYear()].join('-'):''; }
 
   function buildDemoWorkbook(){
-    const rand = mulberry32(20260717);
-    let id = 1;
-    const wb = {};
+    const rand=mulberry32(20260717); let id=1000;
+    const pick=a=>a[Math.floor(rand()*a.length)];
+    const wb={};
+    // helper builds one synthetic row reaching a given stage in month (0-based)
+    function row(stage, y, mIdx){
+      const sid='DEMO-'+String(id).padStart(6,'0');
+      const pat='DEMO Patient '+String(id-999).padStart(3,'0'); id++;
+      const biopsy=new Date(y,mIdx,1+Math.floor(rand()*24));
+      const rec=new Date(biopsy.getTime()+(1+Math.floor(rand()*4))*DAY);
+      const nEmb=1+Math.floor(rand()*5);
+      const r=new Array(HEADERS.length).fill('');
+      r[1]=dmy(biopsy); r[2]=dmy(rec); r[3]=dmy(rec); r[4]=pick(D_STAFF); r[5]='BOX-'+(1+Math.floor(rand()*15));
+      r[6]=sid; r[8]=pat; r[9]=String(nEmb); r[10]='E-'+Array.from({length:nEmb},(_,i)=>i+1).join(',');
+      r[11]='NC'; r[12]=pick(D_TESTS); r[13]=pick(D_CENTERS); r[14]=pick(D_LOC); r[15]=pick(D_EMB);
+      r[17]='CHROMINST'; r[18]=pick(D_STAFF); r[19]='WBOX-'+(1+Math.floor(rand()*10)); r[21]='Surfseq';
+      const wga=new Date(rec.getTime()+(2+Math.floor(rand()*3))*DAY);
+      const seq=new Date(wga.getTime()+(1+Math.floor(rand()*3))*DAY);
+      const att=new Date(seq.getTime()+1*DAY);
+      const ngs=new Date(seq.getTime()+(1+Math.floor(rand()*3))*DAY);
+      const order=['received','extract','pending','prep','released'];
+      const upto=order.indexOf(stage);
+      if(upto>=1) r[16]=dmy(wga);
+      if(upto>=2) r[20]=dmy(seq);
+      if(upto>=3) r[22]=dmy(att);
+      if(upto>=4) r[23]=dmy(ngs);
+      return r;
+    }
+    function tab(name,y,mIdx,plan){ const g=[HEADERS.slice()]; plan.forEach(([st,n])=>{ for(let i=0;i<n;i++) g.push(row(st,y,mIdx)); }); wb[name]=g; }
 
-    // ── Pending tab (current, in-progress) ──
-    const pending = [HEADERS.slice()];
-    [['Received',157],['Extraction',89],['Pending',34],['Report Prep',45]].forEach(([label,count])=>{
-      for(let i=0;i<count;i++){
-        const sid = 'PGTA-'+String(id++).padStart(4,'0');
-        const who = DEMO_NAMES[Math.floor(rand()*DEMO_NAMES.length)];
-        const rec = new Date(TODAY.getTime() - Math.floor(rand()*14)*DAY);
-        const due = new Date(rec.getTime() + 7*DAY);
-        pending.push([sid, label, who, dmy(rec), dmy(due), '']);
-      }
-    });
-    wb['Pending'] = pending;
-
-    // ── Month tabs (released), newest listed later but sorted in UI ──
-    const monthPlan = [ ['January 2026',78,0],['February 2026',82,1],['March 2026',85,2],['April 2026',88,3],['May 2026',92,4],['June 2026',95,5],['July 2026',92,6] ];
-    monthPlan.forEach(([name,count,monthIdx])=>{
-      const grid = [HEADERS.slice()];
-      for(let i=0;i<count;i++){
-        const sid = 'PGTA-'+String(id++).padStart(4,'0');
-        const who = DEMO_NAMES[Math.floor(rand()*DEMO_NAMES.length)];
-        const relDay = 1 + Math.floor(rand()*27);
-        const rel = new Date(2026, monthIdx, relDay);
-        const tat = 3 + Math.floor(rand()*4);       // 3–6 day turnaround
-        const rec = new Date(rel.getTime() - tat*DAY);
-        const due = new Date(rec.getTime() + 7*DAY);
-        grid.push([sid, 'Released', who, dmy(rec), dmy(due), dmy(rel)]);
-      }
-      wb[name] = grid;
-    });
+    // Past months: fully released
+    tab('May 2026',   2026,4, [['released',42]]);
+    tab('June 2026',  2026,5, [['released',48]]);
+    // Current month (July): mixed pipeline
+    tab('July 2026',  2026,6, [['received',9],['extract',7],['pending',6],['prep',5],['released',31]]);
+    // Pending tab: received / on hold only
+    const p=[HEADERS.slice()];
+    for(let i=0;i<14;i++){ const r=row('received',2026,5); r[7]='On hold — pre-PGT workup pending'; p.push(r); }
+    wb['Pending']=p;
     return wb;
   }
 
-  /* =====================================================================
-     INIT
-  ===================================================================== */
-  fetchData(false);
+  /* INIT */
+  fetchData();
   startSync();
   </script>
 </body>
