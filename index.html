@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>PGTA Sample Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ───────────────────── TOKENS ───────────────────── */
+    :root{
+      color-scheme: light only;
+      --bg:        #f4f6fb;
+      --panel:     #ffffff;
+      --text:      #1f2937;
+      --heading:   #111827;
+      --muted:     #6b7280;
+      --border:    #e5e7eb;
+      --border-2:  #eef1f6;
+      --thead:     #f8fafc;
+
+      /* status palette (Received → Extraction → Pending → Report Prep → Released) */
+      --received:  #3b82f6;  --received-bg:#eff6ff;
+      --extract:   #d97706;  --extract-bg: #fff7ed;
+      --pending:   #6b7280;  --pending-bg: #f3f4f6;
+      --prep:      #db2777;  --prep-bg:    #fdf2f8;
+      --released:  #16a34a;  --released-bg:#f0fdf4;
+
+      --danger:    #dc2626;  --danger-bg:  #fef2f2;
+      --accent:    #2563eb;  --accent-h:   #1d4ed8;
+      --teal:      #0d9488;
+
+      --r:   12px;
+      --rs:  8px;
+      --sh:  0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+      --tr:  all .18s cubic-bezier(.4,0,.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Inter',system-ui,sans-serif;
+      font-size:14px;color:var(--text);background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:1500px;margin:0 auto;padding:26px 32px 48px}
+
+    /* ───────────────────── TOP BAR ───────────────────── */
+    .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}
+    .title{font-size:26px;font-weight:800;color:var(--heading);letter-spacing:-.4px}
+    .subtitle{display:flex;align-items:center;gap:8px;margin-top:4px;color:var(--muted);font-size:13px;font-weight:500}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--released);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+    .dot.demo{background:var(--extract);box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+    .pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:999px}
+    .pill.live{color:var(--released);background:var(--released-bg)}
+    .pill.demo{color:var(--extract);background:var(--extract-bg)}
+
+    .btn{
+      display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:14px;font-weight:600;
+      border:none;cursor:pointer;border-radius:var(--rs);padding:10px 20px;transition:var(--tr);
+    }
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-h)}
+    .btn-primary:active{transform:translateY(1px)}
+    .btn .spin{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ───────────────────── STAT CARDS ───────────────────── */
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
+    .stat{
+      background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+      padding:20px 16px;text-align:center;box-shadow:var(--sh);transition:var(--tr);cursor:default;
+      position:relative;overflow:hidden;
+    }
+    .stat::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c,var(--border))}
+    .stat:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(16,24,40,.08)}
+    .stat .ic{font-size:24px;line-height:1;margin-bottom:8px}
+    .stat .lbl{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+    .stat .num{font-size:28px;font-weight:800;color:var(--c,var(--heading));letter-spacing:-.5px}
+    .stat[data-s="received"]{--c:var(--received)}
+    .stat[data-s="extract"] {--c:var(--extract)}
+    .stat[data-s="pending"] {--c:var(--pending)}
+    .stat[data-s="prep"]    {--c:var(--prep)}
+    .stat[data-s="released"]{--c:var(--released)}
+
+    /* ───────────────────── BODY GRID ───────────────────── */
+    .body-grid{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;border-bottom:1px solid var(--border-2)}
+    .panel-head h2{font-size:16px;font-weight:700;color:var(--heading)}
+
+    .search{
+      display:flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:var(--rs);
+      padding:7px 12px;background:#fff;min-width:210px;transition:var(--tr);
+    }
+    .search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+    .search svg{width:15px;height:15px;color:var(--muted);flex:none}
+    .search input{border:none;outline:none;font-family:inherit;font-size:13px;width:100%;background:transparent;color:var(--text)}
+
+    /* ───────────────────── TABLE ───────────────────── */
+    table{width:100%;border-collapse:collapse}
+    thead th{
+      text-align:left;font-size:12px;font-weight:600;color:var(--muted);text-transform:none;
+      padding:12px 22px;background:var(--thead);border-bottom:1px solid var(--border-2);
+    }
+    tbody td{padding:14px 22px;border-bottom:1px solid var(--border-2);font-size:14px}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr{transition:background .12s}
+    tbody tr:hover{background:#fafbfd}
+    .sid{font-weight:600;color:var(--heading)}
+    .due{font-variant-numeric:tabular-nums;color:var(--text)}
+    .due.over{color:var(--danger);font-weight:700}
+    .assigned{color:var(--text)}
+
+    .badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;white-space:nowrap}
+    .badge.received{color:var(--received);background:var(--received-bg)}
+    .badge.extract {color:var(--extract); background:var(--extract-bg)}
+    .badge.pending {color:var(--pending); background:var(--pending-bg)}
+    .badge.prep    {color:var(--prep);    background:var(--prep-bg)}
+    .badge.released{color:var(--released);background:var(--released-bg)}
+
+    .viewall{text-align:center;padding:16px}
+    .viewall a{color:var(--accent);font-weight:600;font-size:14px;text-decoration:none;cursor:pointer}
+    .viewall a:hover{text-decoration:underline}
+    .empty{padding:40px 22px;text-align:center;color:var(--muted)}
+
+    /* ───────────────────── SIDEBAR ───────────────────── */
+    .side{display:flex;flex-direction:column;gap:22px}
+
+    .alert-panel{background:var(--danger-bg);border:1px solid #fecaca;border-radius:var(--r)}
+    .alert-panel .panel-head{border-bottom:1px solid #fecaca}
+    .alert-panel h2{color:var(--danger);display:flex;align-items:center;gap:8px}
+    .alert-panel h2 svg{width:17px;height:17px}
+    .alert-list{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+    .alert-card{
+      background:#fff;border:1px solid #fee2e2;border-left:3px solid var(--danger);
+      border-radius:var(--rs);padding:11px 14px;
+    }
+    .alert-card .aid{font-weight:700;color:var(--danger);font-size:14px}
+    .alert-card .areason{color:var(--muted);font-size:12.5px;margin-top:2px}
+    .alert-empty{padding:22px 16px;text-align:center;color:var(--muted);font-size:13px}
+
+    .summary .panel-head{border-bottom:1px solid var(--border-2)}
+    .sum-list{padding:8px 22px 18px}
+    .sum-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border-2)}
+    .sum-row:last-child{border-bottom:none}
+    .sum-row .k{color:var(--muted);font-size:14px}
+    .sum-row .v{font-weight:700;font-size:18px;color:var(--heading)}
+    .v.inprog{color:var(--extract)}
+    .v.rate{color:var(--released)}
+    .v.avg{color:var(--teal)}
+
+    /* ───────────────────── RESPONSIVE ───────────────────── */
+    @media(max-width:1100px){
+      .stats{grid-template-columns:repeat(3,1fr)}
+      .body-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:640px){
+      .wrap{padding:18px 16px 40px}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .topbar{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- ── TOP BAR ── -->
+    <div class="topbar">
+      <div>
+        <div class="title">PGTA Sample Tracker</div>
+        <div class="subtitle">
+          <span class="dot" id="conn-dot"></span>
+          Live tracking • 30s sync
+          <span class="pill live" id="conn-pill">Live</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="refresh-btn" onclick="refresh()">
+        <svg id="refresh-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        Refresh
+      </button>
+    </div>
+
+    <!-- ── STAT CARDS ── -->
+    <div class="stats" id="stats">
+      <div class="stat" data-s="received"><div class="ic">📬</div><div class="lbl">Received</div><div class="num" id="c-received">0</div></div>
+      <div class="stat" data-s="extract"><div class="ic">🔬</div><div class="lbl">Extraction</div><div class="num" id="c-extract">0</div></div>
+      <div class="stat" data-s="pending"><div class="ic">⏳</div><div class="lbl">Pending</div><div class="num" id="c-pending">0</div></div>
+      <div class="stat" data-s="prep"><div class="ic">📋</div><div class="lbl">Report Prep</div><div class="num" id="c-prep">0</div></div>
+      <div class="stat" data-s="released"><div class="ic">✅</div><div class="lbl">Released</div><div class="num" id="c-released">0</div></div>
+    </div>
+
+    <!-- ── BODY ── -->
+    <div class="body-grid">
+
+      <!-- LEFT: current samples -->
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Current samples</h2>
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="search" type="text" placeholder="Search..." oninput="renderTable()" autocomplete="off" />
+          </label>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Sample ID</th><th>Status</th><th>Due</th><th>Assigned</th></tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="viewall" id="viewall-row"><a id="viewall" onclick="toggleViewAll()">View all →</a></div>
+      </section>
+
+      <!-- RIGHT: sidebar -->
+      <aside class="side">
+        <div class="alert-panel">
+          <div class="panel-head">
+            <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Fast track alert</h2>
+          </div>
+          <div class="alert-list" id="alert-list"></div>
+        </div>
+
+        <div class="panel summary">
+          <div class="panel-head"><h2>Summary</h2></div>
+          <div class="sum-list">
+            <div class="sum-row"><span class="k">Total samples</span><span class="v" id="s-total">0</span></div>
+            <div class="sum-row"><span class="k">In progress</span><span class="v inprog" id="s-inprog">0</span></div>
+            <div class="sum-row"><span class="k">Completion rate</span><span class="v rate" id="s-rate">0%</span></div>
+            <div class="sum-row"><span class="k">Avg time</span><span class="v avg" id="s-avg">0d</span></div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <script>
+  /* =====================================================================
+     CONFIG
+  ===================================================================== */
+  // PLACEHOLDER — replace with the deployed PGT-A Google Apps Script /exec URL.
+  // While it is the placeholder value, the page falls back to bundled demo data.
+  const APPS_SCRIPT_URL = 'REPLACE_WITH_PGTA_APPS_SCRIPT_EXEC_URL';
+  const SHEET_NAME      = 'Sheet1';
+  const SYNC_INTERVAL   = 30000;          // 30s live sync
+  const TABLE_LIMIT     = 8;              // rows shown before "View all"
+  const TODAY           = new Date();     // reference date for due/overdue math
+
+  // Status pipeline. `key` drives CSS classes; `match` are header/value aliases.
+  const STATUSES = [
+    { key:'received', label:'Received',    match:['received','sample received','logged in'] },
+    { key:'extract',  label:'Extraction', match:['extraction','extract','dna extraction'] },
+    { key:'pending',  label:'Pending',    match:['pending','analysis','in analysis','wgs','sequencing'] },
+    { key:'prep',     label:'Report Prep',match:['report prep','report preparation','reporting','report'] },
+    { key:'released', label:'Released',   match:['released','completed','done','report released'] },
+  ];
+  const ACTIVE_KEYS = ['extract','pending','prep'];          // "in progress"
+  const OPEN_KEYS   = ['received','extract','pending','prep']; // not yet released
+
+  // Header aliases → logical fields (mirror of report-tracker COL_MAP idea).
+  const COL_MAP = {
+    sample_id: ['sample id','sample_id','sampleid','pgta id','pgt-a id','id'],
+    status:    ['status','stage','current status'],
+    assigned:  ['assigned','assigned to','assigned_to','analyst','embryologist','technician'],
+    received:  ['received','received date','received_date','date received','sample received'],
+    due:       ['due','due date','due_date','tat','deadline','target date'],
+    released:  ['released','release date','released_date','report release date'],
+  };
+
+  /* =====================================================================
+     STATE
+  ===================================================================== */
+  let rows = [];
+  let showAll = false;
+  let isDemo = false;
+  let syncTimer = null;
+
+  /* =====================================================================
+     FETCH  (live → demo fallback)
+  ===================================================================== */
+  async function fetchData(silent){
+    const usingPlaceholder = APPS_SCRIPT_URL.startsWith('REPLACE_WITH');
+    if (usingPlaceholder){
+      loadDemo();
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(()=>controller.abort(), 15000);
+    try{
+      const url = APPS_SCRIPT_URL + '?sheet=' + encodeURIComponent(SHEET_NAME);
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      const grid = await resp.json();
+      rows = parseGrid(grid);
+      isDemo = false;
+      setConn(true);
+      renderAll();
+    }catch(err){
+      clearTimeout(timer);
+      console.warn('Live fetch failed, using demo data:', err.message);
+      loadDemo();
+    }
+  }
+
+  function loadDemo(){
+    rows = parseGrid(buildDemoGrid());
+    isDemo = true;
+    setConn(false);
+    renderAll();
+  }
+
+  function setConn(live){
+    document.getElementById('conn-dot').className   = 'dot' + (live?'':' demo');
+    const pill = document.getElementById('conn-pill');
+    pill.className   = 'pill ' + (live?'live':'demo');
+    pill.textContent = live ? 'Live' : 'Demo data';
+  }
+
+  /* =====================================================================
+     PARSE GRID  ([][] from Apps Script) → row objects
+  ===================================================================== */
+  function norm(v){ return String(v==null?'':v).trim(); }
+
+  function isHeaderRow(row){
+    const cells = row.map(c=>norm(c).toLowerCase());
+    return cells.some(c => COL_MAP.sample_id.includes(c)) &&
+           cells.some(c => COL_MAP.status.includes(c));
+  }
+
+  function colIndexFor(headers, aliases){
+    const lower = headers.map(h=>norm(h).toLowerCase());
+    for(const a of aliases){
+      const i = lower.findIndex(h => h===a || h.includes(a));
+      if(i!==-1) return i;
+    }
+    return -1;
+  }
+
+  function parseGrid(grid){
+    if(!Array.isArray(grid) || !grid.length) return [];
+    let headerIdx = grid.findIndex(isHeaderRow);
+    if(headerIdx===-1) headerIdx = 0;
+    const headers = grid[headerIdx];
+    const idx = {};
+    for(const k in COL_MAP) idx[k] = colIndexFor(headers, COL_MAP[k]);
+
+    const out = [];
+    for(let r=headerIdx+1; r<grid.length; r++){
+      const row = grid[r];
+      if(!row || !row.some(c=>norm(c)!=='')) continue;
+      const get = k => idx[k]!==-1 ? norm(row[idx[k]]) : '';
+      const sid = get('sample_id');
+      if(!sid) continue;
+      out.push({
+        sample_id: sid,
+        status:    resolveStatus(get('status')),
+        assigned:  get('assigned'),
+        received:  parseDate(get('received')),
+        due:       parseDate(get('due')),
+        released:  parseDate(get('released')),
+      });
+    }
+    return out;
+  }
+
+  // Map a raw status cell to one of the pipeline keys.
+  function resolveStatus(raw){
+    const v = norm(raw).toLowerCase();
+    for(const s of STATUSES){
+      if(s.match.some(m => v===m || v.includes(m))) return s.key;
+    }
+    return 'received';
+  }
+  function statusDef(key){ return STATUSES.find(s=>s.key===key) || STATUSES[0]; }
+
+  /* =====================================================================
+     DATE HELPERS
+  ===================================================================== */
+  function parseDate(str){
+    const s = norm(str);
+    if(!s) return null;
+    let m;
+    // DD-MM-YYYY or DD/MM/YYYY
+    if((m = s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/))){
+      let [,d,mo,y] = m; y = y.length===2 ? '20'+y : y;
+      const dt = new Date(+y, +mo-1, +d);
+      return isNaN(dt) ? null : dt;
+    }
+    // YYYY-MM-DD
+    if((m = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/))){
+      const dt = new Date(+m[1], +m[2]-1, +m[3]);
+      return isNaN(dt) ? null : dt;
+    }
+    const dt = new Date(s);
+    return isNaN(dt) ? null : dt;
+  }
+  function fmtShort(d){
+    if(!d) return '—';
+    return String(d.getDate()).padStart(2,'0') + '-' + String(d.getMonth()+1).padStart(2,'0');
+  }
+  function daysBetween(a,b){ return Math.round((b - a) / 86400000); }
+  function startOfDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+
+  /* =====================================================================
+     RENDER
+  ===================================================================== */
+  function renderAll(){
+    renderStats();
+    renderTable();
+    renderAlerts();
+    renderSummary();
+  }
+
+  function renderStats(){
+    const counts = {received:0,extract:0,pending:0,prep:0,released:0};
+    rows.forEach(r => counts[r.status]!==undefined && counts[r.status]++);
+    document.getElementById('c-received').textContent = counts.received;
+    document.getElementById('c-extract').textContent  = counts.extract;
+    document.getElementById('c-pending').textContent  = counts.pending;
+    document.getElementById('c-prep').textContent     = counts.prep;
+    document.getElementById('c-released').textContent = counts.released;
+  }
+
+  function renderTable(){
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    const today = startOfDay(TODAY);
+
+    let list = rows.slice().sort((a,b)=> sortKey(b) - sortKey(a)); // most recent first
+    if(q){
+      list = list.filter(r =>
+        r.sample_id.toLowerCase().includes(q) ||
+        statusDef(r.status).label.toLowerCase().includes(q) ||
+        (r.assigned||'').toLowerCase().includes(q)
+      );
+    }
+    const total = list.length;
+    if(!showAll && !q) list = list.slice(0, TABLE_LIMIT);
+
+    const tbody = document.getElementById('tbody');
+    if(!list.length){
+      tbody.innerHTML = `<tr><td colspan="4" class="empty">No samples found.</td></tr>`;
+    } else {
+      tbody.innerHTML = list.map(r=>{
+        const def = statusDef(r.status);
+        const over = r.due && r.status!=='released' && startOfDay(r.due) < today;
+        return `<tr>
+          <td class="sid">${esc(r.sample_id)}</td>
+          <td><span class="badge ${def.key}">${esc(def.label)}</span></td>
+          <td class="due ${over?'over':''}">${fmtShort(r.due)}</td>
+          <td class="assigned">${esc(r.assigned)||'—'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    const va = document.getElementById('viewall-row');
+    const link = document.getElementById('viewall');
+    if(q || total<=TABLE_LIMIT){ va.style.display='none'; }
+    else { va.style.display='block'; link.textContent = showAll ? 'Show less ↑' : `View all (${total}) →`; }
+  }
+
+  // sort helper: newest due/received first, else by sample id number
+  function sortKey(r){
+    const d = r.due || r.received || r.released;
+    if(d) return d.getTime();
+    const n = parseInt((r.sample_id.match(/(\d+)/)||[])[1] || '0', 10);
+    return n;
+  }
+
+  function renderAlerts(){
+    const today = startOfDay(TODAY);
+    const alerts = [];
+    rows.forEach(r=>{
+      if(r.status==='released') return;
+      // Overdue
+      if(r.due && startOfDay(r.due) < today){
+        alerts.push({ id:r.sample_id, reason:`Overdue by ${daysBetween(startOfDay(r.due), today)} days`, sev:0 });
+        return;
+      }
+      // Due soon (≤3 days)
+      if(r.due){
+        const dd = daysBetween(today, startOfDay(r.due));
+        if(dd>=0 && dd<=3){ alerts.push({ id:r.sample_id, reason: dd===0?'Due today':`Due in ${dd} day${dd>1?'s':''}`, sev:1 }); return; }
+      }
+      // Stuck (received long ago, still open)
+      if(r.received && ACTIVE_KEYS.includes(r.status)){
+        const age = daysBetween(startOfDay(r.received), today);
+        if(age>=5){ alerts.push({ id:r.sample_id, reason:`Stuck ${age} days`, sev:2 }); }
+      }
+    });
+    alerts.sort((a,b)=> a.sev-b.sev);
+    const top = alerts.slice(0,5);
+
+    const el = document.getElementById('alert-list');
+    if(!top.length){
+      el.innerHTML = `<div class="alert-empty">No fast-track alerts 🎉</div>`;
+    } else {
+      el.innerHTML = top.map(a=>`
+        <div class="alert-card">
+          <div class="aid">${esc(a.id)}</div>
+          <div class="areason">${esc(a.reason)}</div>
+        </div>`).join('');
+    }
+  }
+
+  function renderSummary(){
+    const total   = rows.length;
+    const inprog  = rows.filter(r=>ACTIVE_KEYS.includes(r.status)).length;
+    const released= rows.filter(r=>r.status==='released');
+    const rate    = total ? (released.length/total*100) : 0;
+
+    // Avg turnaround = mean(released - received) in days
+    const durations = released
+      .filter(r=>r.received && r.released)
+      .map(r=>daysBetween(startOfDay(r.received), startOfDay(r.released)))
+      .filter(d=>d>=0);
+    const avg = durations.length ? durations.reduce((a,b)=>a+b,0)/durations.length : 0;
+
+    document.getElementById('s-total').textContent  = total;
+    document.getElementById('s-inprog').textContent = inprog;
+    document.getElementById('s-rate').textContent   = rate.toFixed(1) + '%';
+    document.getElementById('s-avg').textContent    = avg ? avg.toFixed(1) + 'd' : '—';
+  }
+
+  function toggleViewAll(){ showAll = !showAll; renderTable(); }
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  /* =====================================================================
+     REFRESH + LIVE SYNC
+  ===================================================================== */
+  function refresh(){
+    const ic = document.getElementById('refresh-ic');
+    ic.classList.add('spin');
+    Promise.resolve(fetchData(false)).finally(()=> setTimeout(()=>ic.classList.remove('spin'), 400));
+  }
+  function startSync(){
+    if(syncTimer) clearInterval(syncTimer);
+    syncTimer = setInterval(()=>fetchData(true), SYNC_INTERVAL);
+  }
+
+  /* =====================================================================
+     DEMO DATA  (deterministic — mirrors the design mockup)
+     Distribution: Received 157 · Extraction 89 · Pending 34 ·
+                   Report Prep 45 · Released 612  → total 937
+  ===================================================================== */
+  function mulberry32(a){ return function(){ a|=0;a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+  function buildDemoGrid(){
+    const rand = mulberry32(20260717);
+    const names = ['Sharma','Patel','Kumar','Verma','Reddy','Singh','Nair','Iyer'];
+    const plan = [
+      ['received',157],['extract',89],['pending',34],['prep',45],['released',612],
+    ];
+    const grid = [['Sample ID','Status','Assigned','Received','Due','Released']];
+    const day = 86400000;
+    let id = 1;
+    plan.forEach(([key,count])=>{
+      const label = statusDef(key).label;
+      for(let i=0;i<count;i++){
+        const sid = 'PGTA-' + String(id++).padStart(4,'0');
+        const who = names[Math.floor(rand()*names.length)];
+        if(key==='released'){
+          const recAgo = 5 + Math.floor(rand()*40);            // received 5–45d ago
+          const tat    = 3 + Math.floor(rand()*4);             // 3–6 day turnaround (avg ~4.2)
+          const rec = new Date(TODAY.getTime() - recAgo*day);
+          const rel = new Date(rec.getTime() + tat*day);
+          grid.push([sid, label, who, dmy(rec), dmy(new Date(rec.getTime()+7*day)), dmy(rel)]);
+        } else {
+          const recAgo = Math.floor(rand()*14);                // received 0–14d ago
+          const rec = new Date(TODAY.getTime() - recAgo*day);
+          const due = new Date(rec.getTime() + 7*day);         // 7-day TAT target
+          grid.push([sid, label, who, dmy(rec), dmy(due), '']);
+        }
+      }
+    });
+    return grid;
+  }
+  function dmy(d){ return [String(d.getDate()).padStart(2,'0'),String(d.getMonth()+1).padStart(2,'0'),d.getFullYear()].join('-'); }
+
+  /* =====================================================================
+     INIT
+  ===================================================================== */
+  fetchData(false);
+  startSync();
+  </script>
+</body>
+</html>

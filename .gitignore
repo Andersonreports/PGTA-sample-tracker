@@ -1,0 +1,15 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.DS_Store
+temp_report_tracker*
+
+# ── Kept local-only: NOT published to the public GitHub Pages repo ──
+# The dashboard (index.html) is fully client-side and needs none of these.
+# The Python backend/report_tracker page can't run on static Pages and would
+# publicly expose an internal Google Sheet ID, so they stay off GitHub.
+backend/
+front end/
+apps-script/
+xlsx.full.min.js
